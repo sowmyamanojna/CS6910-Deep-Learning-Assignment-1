@@ -45,6 +45,6 @@ class NeuralNetwork():
     def backward_propogation(self, t):
         for epoch in range(self.epochs):
             for i in range(self.num_batches):
-                X_batch, y_batch = self.layers[0].input[i*50:(i+1)*50], t[i*50:(i+1)*50]
+                X_batch, y_batch = self.layers[0].input[i*self.batch_size:(i+1)*self.batch_size], t[i*self.batch_size:(i+1)*self.batch_size]
                 self.layers[-1].loss = 
                 for layer in self.layers.reverse():
