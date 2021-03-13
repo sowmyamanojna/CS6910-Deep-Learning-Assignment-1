@@ -62,6 +62,7 @@ class NeuralNetwork():
 		# Initialize variables neesed to keep track of loss
 		self.loss_hist = []
 		self.loss = CrossEntropy()
+		flag = 0
 
 		# Perform Backprop
 		for epoch in tqdm(range(self.epochs)):
@@ -75,6 +76,15 @@ class NeuralNetwork():
 
 				# Calculate Loss, grad wrt y and softmax for last layer
 				self.loss_hist.append(self.loss.calc_loss(self.t, self.layers[-1].y))
+				try:
+					if self.loss_hist[-1] > self.loss_hist[-2]:
+						print("Early Stopping")
+						flag = 1
+				except:
+					pass
+
+				if flag == 1:
+					break
 
 				self.layers[-1].cross_grad = self.loss.diff()
 				# self.layers[-1].softmax_grad = Softmax().diff(self.layers[-1].a)
@@ -123,3 +133,6 @@ class NeuralNetwork():
 					# layer.b = layer.b - self.b_update
 				
 				self.forward_propogation()
+
+			if flag == 1:
+				break
