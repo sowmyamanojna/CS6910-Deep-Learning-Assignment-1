@@ -51,9 +51,14 @@ class Softmax():
 
     def value(self, x):
         val = np.exp(x)/np.sum(np.exp(x))
+        # print("X shape", x.shape, "Val shape", val.shape)
         return val
 
     def diff(self, x):
         y = self.value(x)
-        val = (np.ones(y.shape) - y.T)*y
+        # print("Y shape:", y.shape)
+        # Refernce for checking examples:
+        # https://aimatters.wordpress.com/2019/06/17/the-softmax-function-derivative/
+        mat = np.tile(y, y.shape[0])
+        val = np.diag(y.reshape(-1,)) - (mat*mat.T)
         return val

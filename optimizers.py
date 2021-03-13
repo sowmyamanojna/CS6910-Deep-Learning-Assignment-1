@@ -49,7 +49,7 @@ class RMSProp():
         return (self.eta/(self.v+self.eps)**0.5)*grad
 
 class Adam():
-    def __init__(self, beta1=0.9, beta2=0.999, eta=1e-3, eps=1e-7):
+    def __init__(self, beta1=0.9, beta2=0.999, eta=1e-3, eps=1e-8):
         self.m = 0
         self.v = 0
         self.beta1 = beta1
@@ -59,8 +59,14 @@ class Adam():
         self.iter = 1
 
     def get_update(self, grad):
+        # print("Grad shape:", ((1-self.beta1)*grad).shape)
+        # try:
+        #     print("(from try) m Shape:", (self.beta1*self.m).shape)
+        # except:
+        #     pass
         self.m = self.beta1*self.m + (1-self.beta1)*grad
         self.v = self.beta2*self.v + (1-self.beta2)*(grad**2)
+        # print("Shape change?:", self.m.shape)
         m_cap = self.m/(1-self.beta1**self.iter)
         v_cap = self.v/(1-self.beta2**self.iter)        
         self.iter += 1
