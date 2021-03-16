@@ -10,15 +10,25 @@ class Input():
     def __init__(self, data):
         self.name = "Input"
         self.input = data
-        print(data.shape)
-        self.input = np.append(data, np.ones((1, data.shape[1])), axis=0)
+        self.size = self.input.shape[0]
+        # self.input = np.append(data, np.ones((1, data.shape[1])), axis=0)
         # Having the input as the activated output 
         # to be given to the next layer
         self.a = self.input
-        self.size = self.input.shape[0]
+        self.type = "Input layer"
+
+    def __repr__(self):
+        representation = self.type + " - of Size:" + str(self.size)
+        return representation
 
 class Dense():
-    def __init__(self, size, activation, name):
+    def __init__(self, size, activation, name, last=False):
         self.name = name
         self.size = size
         self.activation = map_activations[activation]
+        self.activation_name = activation
+        self.type = "Dense layer"
+
+    def __repr__(self):
+        representation = self.type + " - of Size:" + str(self.size) + "; Activation:" + self.activation_name
+        return representation

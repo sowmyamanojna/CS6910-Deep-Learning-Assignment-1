@@ -12,8 +12,10 @@ class Sigmoid():
         val = 1 + np.exp(-self.c*(x + self.b))
         return 1/val
 
-    def diff(self, x):
+    def diff(self, x, remove=False):
         y = self.value(x)
+        if remove==True:
+            y = y[:-1,:]
         val = self.c*y*(1-y)
         return val
 
@@ -50,7 +52,7 @@ class Softmax():
         pass
 
     def value(self, x):
-        val = np.exp(x)/np.sum(np.exp(x))
+        val = np.exp(x)/np.sum(np.exp(x), axis=0)
         # print("X shape", x.shape, "Val shape", val.shape)
         return val
 
