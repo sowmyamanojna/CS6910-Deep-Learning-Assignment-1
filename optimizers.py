@@ -17,7 +17,7 @@ class Normal():
         return self.update
 
 class Momentum():
-    def __init__(self, eta=1e-5, gamma=0.9):
+    def __init__(self, eta=1e-3, gamma=0.9):
         self.update = 0
         self.eta = eta
         self.gamma = gamma
@@ -31,7 +31,7 @@ class Momentum():
         return self.update
 
 class Nesterov():
-    def __init__(self, eta=1e-5, gamma=0.9):
+    def __init__(self, eta=1e-3, gamma=0.9):
         self.update = 0
         self.eta = eta
         self.gamma = gamma
@@ -49,7 +49,7 @@ class Nesterov():
         
 
 class AdaGrad():
-    def __init__(self, eta=1e-3, eps=1e-7):
+    def __init__(self, eta=1e-2, eps=1e-7):
         self.v = 0
         self.eta = eta
         self.eps = eps
@@ -78,7 +78,7 @@ class RMSProp():
         return (self.eta/(self.v+self.eps)**0.5)*grad
 
 class Adam():
-    def __init__(self, beta1=0.9, beta2=0.999, eta=1e-4, eps=1e-8):
+    def __init__(self, beta1=0.9, beta2=0.999, eta=1e-2, eps=1e-8):
         self.m = 0
         self.v = 0
         self.beta1 = beta1
@@ -92,11 +92,11 @@ class Adam():
             setattr(self, key, params[key])
 
     def get_update(self, grad):
-        try:
-            print("Size of M:", self.m.shape)
-        except:
-            pass
-        print("Size of term 2:", grad.shape)
+        # try:
+        #     print("Size of M:", self.m.shape)
+        # except:
+        #     pass
+        # print("Size of term 2:", grad.shape)
         self.m = self.beta1*self.m + (1-self.beta1)*grad
         self.v = self.beta2*self.v + (1-self.beta2)*(grad**2)
         m_cap = self.m/(1-self.beta1**self.iter)
