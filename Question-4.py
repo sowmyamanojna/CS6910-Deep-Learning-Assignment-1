@@ -98,15 +98,23 @@ def train_nn(config = sweep_config):
         acc_val, loss_val, _ = nn_model.check_test(X_val_scaled, t_val)
         acc_test, loss_test, _ = nn_model.check_test(X_test_scaled, t_test)
         
-        wandb.log({"loss": np.array(nn_model.loss_hist)/t.shape[1], \
-                   "accuracy": np.array(nn_model.accuracy_hist)/t.shape[1], \
-                   "val_loss": np.array(nn_model.loss_hist_val)/t_val.shape[1], \
-                   "val_accuracy": np.array(nn_model.accuracy_hist_val)/t_val.shape[1], \
-                   "val_loss_end": np.array(loss_val)/t_val.shape[1], \
-                   "val_acc_end": np.array(acc_val)/t_val.shape[1], \
-                   "test_loss_end": np.array(loss_test)/t_test.shape[1], \
-                   "test_acc_end": np.array(acc_test)/t_test.shape[1]})
+        wandb.log({"val_loss_end": loss_val/t_val.shape[1], \
+                   "val_acc_end": acc_val/t_val.shape[1], \
+                   "test_loss_end": loss_test/t_test.shape[1], \
+                   "test_acc_end": acc_test/t_test.shape[1], \
+                   "epoch":config.num_epochs})
 
+        for step_loss in nn_model.loss_hist:
+            wandb.log({'loss': step_loss/t.shape[1]})
+
+        for step_acc in nn_model.accuracy_hist:
+            wandb.log({'accuracy': step_acc/t.shape[1]})
+        
+        for step_val_loss in nn_model.loss_hist_val:
+            wandb.log({'val_loss': step_val_loss/t_val.shape[1]})
+
+        for step_val_accuracy in nn_model.accuracy_hist_val:
+            wandb.log({'val_accuracy': step_val_accuracy/t_val.shape[1]})
 ####################################################################
 sweep_id = wandb.sweep(sweep_config, project = "CS6910-Assignment-1")
 wandb.agent(sweep_id, function = train_nn)
