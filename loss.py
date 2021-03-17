@@ -27,6 +27,6 @@ class SquaredError():
 		loss = np.sum((t-y)**2)
 		return loss
 
-	def diff(self):
-		grad = -(self.t - self.y)
+	def diff(self, t_batch, y_batch):
+		grad = -(t_batch - y_batch)
 		return grad
