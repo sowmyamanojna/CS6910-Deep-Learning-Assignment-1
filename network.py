@@ -114,6 +114,13 @@ class NeuralNetwork():
         # Perform Backprop
         # for _ in range(self.epochs):
         for _ in tqdm(range(self.epochs)):
+            self.eta_hist.append(self.layers[-1].W_optimizer.eta)
+            self.loss_hist.append(self.loss.calc_loss(self.t, self.layers[-1].y))
+            train_acc, val_acc = self.get_accuracy(validation=True)
+            self.accuracy_hist.append(train_acc)
+            self.loss_hist_val.append(self.loss.calc_loss(self.t_val, self.layers[-1].y_val))
+            self.accuracy_hist_val.append(val_acc)
+            
             for batch in range(self.num_batches):
                 # print("\n", "="*50)
                 # print("Batch:", batch)
@@ -126,12 +133,6 @@ class NeuralNetwork():
                 # Calculate Loss, grad wrt y and softmax for last layer
                 # print("t:\n", self.t)
                 # print("y:\n", self.layers[-1].y)
-                self.eta_hist.append(self.layers[-1].W_optimizer.eta)
-                self.loss_hist.append(self.loss.calc_loss(self.t, self.layers[-1].y))
-                train_acc, val_acc = self.get_accuracy(validation=True)
-                self.accuracy_hist.append(train_acc)
-                self.loss_hist_val.append(self.loss.calc_loss(self.t_val, self.layers[-1].y_val))
-                self.accuracy_hist_val.append(val_acc)
                 # print(self.loss_hist[-1])
                 
                 try:

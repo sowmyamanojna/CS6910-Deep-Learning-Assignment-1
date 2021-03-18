@@ -1,5 +1,3 @@
-# To add a new cell, type "# %%"
-# To add a new markdown cell, type "# %% [markdown]"
 ####################################################################
 import wandb
 import numpy as np
@@ -75,8 +73,8 @@ parameters_dict = {
                 "loss": {"values": ["CrossEntropy", "SquaredError"]}, \
                   }
 sweep_config["parameters"] = parameters_dict
-for i in sweep_config:
-    print(i, sweep_config[i])
+# for i in sweep_config:
+#     print(i, sweep_config[i])
 
 ####################################################################
 def train_nn(config = sweep_config):
@@ -115,8 +113,10 @@ def train_nn(config = sweep_config):
 
         for step_val_accuracy in nn_model.accuracy_hist_val:
             wandb.log({'val_accuracy': step_val_accuracy/t_val.shape[1]})
-####################################################################
-sweep_id = wandb.sweep(sweep_config, project = "CS6910-Assignment-1")
-wandb.agent(sweep_id, function = train_nn)
 
+        for i in np.arange(config.num_epochs):
+            wandb.log({"step":i})
+####################################################################
+sweep_id = wandb.sweep(sweep_config, project = "CS6910_Assignment_1")
+wandb.agent(sweep_id, function = train_nn)
 #################################################################### [markdown]
