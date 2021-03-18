@@ -56,7 +56,8 @@ layers = [Input(data=X_scaled),
 
 model = NeuralNetwork(layers=layers, batch_size=128, optimizer="Normal", \
                       intialization="RandomNormal", loss="CrossEntropy", \
-                      epochs=int(100), t=t, X_val=X_val_scaled, t_val=t_val)
+                      epochs=int(100), t=t, X_val=X_val_scaled, t_val=t_val, \
+                      use_wandb=True)
 
 model.forward_propogation()
 first_pass_y = model.layers[-1].y

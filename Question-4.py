@@ -62,12 +62,12 @@ t_test = t_test[:, :9000]
 sweep_config = {"name": "random-test-sweep", "method": "grid"}
 sweep_config["metric"] = {"name": "loss", "goal": "minimize"}
 parameters_dict = {
-                "num_epochs": {"values": [10, 50, 100]}, \
+                "num_epochs": {"values": [10, 50]}, \
                 # "num_hidden_layers": {"values": [3, 4, 5]}, \
                 "size_hidden_layer": {"values": [32, 64, 128]}, \
-                "learning_rate": {"values": [1e-3, 1e-4]}, \
-                "optimizer": {"values": ["Normal","Momentum","AdaGrad","RMSProp","Adam", "Nadam"]}, \
-                "batch_size": {"values": [128, 256, 512, 1024, 10000, 60000]}, \
+                # "learning_rate": {"values": [1e-3, 1e-4]}, \
+                "optimizer": {"values": ["Normal","Momentum","AdaGrad","RMSProp","Adam","Nadam"]}, \
+                "batch_size": {"values": [128, 1024, 60000]}, \
                 "weight_init": {"values": ["RandomNormal", "XavierUniform"]} , \
                 "activation": {"values": ["Sigmoid", "Tanh", "Relu"]}, \
                 "loss": {"values": ["CrossEntropy", "SquaredError"]}, \
@@ -80,16 +80,23 @@ sweep_config["parameters"] = parameters_dict
 def train_nn(config = sweep_config):
     with wandb.init(config = config):
         config = wandb.init().config
-        wandb.run.name = "epochs_{}_layersize_{}_opt_{}_batch_{}_init_{}".format(config.num_epochs,                                                                             config.size_hidden_layer,                                                                             config.optimizer,                                                                             config.batch_size,                                                                             config.weight_init)
+        wandb.run.name = "e_{}_hl_{}_opt_{}_bs_{}_init_{}_ac_{}_loss_{}".format(config.num_epochs,\
+                                                                      config.size_hidden_layer,\
+                                                                      config.optimizer,\
+                                                                      config.batch_size,\
+                                                                      config.weight_init,\
+                                                                      config.activation,\
+                                                                      config.loss)
 
         layers = [Input(data=X_scaled),\
                   Dense(size=config.size_hidden_layer, activation=config.activation, name="HL1"),\
-                  Dense(size=10, activation="Sigmoid", name="OL")]
+                  Dense(size=10, activation=config.activation, name="OL")]
 
         nn_model = NeuralNetwork(layers=layers, batch_size=config.batch_size, \
                                  optimizer=config.optimizer, intialization=config.weight_init, \
                                  epochs=config.num_epochs, t=t, X_val=X_val_scaled, \
-                                 t_val=t_val, loss=config.loss)
+                                 t_val=t_val, loss=config.loss, use_wandb=True)#, \
+                                #  optim_params={"eta":config.learning_rate})
 
         nn_model.forward_propogation()
         nn_model.backward_propogation()
@@ -102,21 +109,7 @@ def train_nn(config = sweep_config):
                    "test_acc_end": acc_test/t_test.shape[1], \
                    "epoch":config.num_epochs})
 
-        for step_loss in nn_model.loss_hist:
-            wandb.log({'loss': step_loss/t.shape[1]})
-
-        for step_acc in nn_model.accuracy_hist:
-            wandb.log({'accuracy': step_acc/t.shape[1]})
-        
-        for step_val_loss in nn_model.loss_hist_val:
-            wandb.log({'val_loss': step_val_loss/t_val.shape[1]})
-
-        for step_val_accuracy in nn_model.accuracy_hist_val:
-            wandb.log({'val_accuracy': step_val_accuracy/t_val.shape[1]})
-
-        for i in np.arange(config.num_epochs):
-            wandb.log({"step":i})
 ####################################################################
-sweep_id = wandb.sweep(sweep_config, project = "CS6910_Assignment_1")
+sweep_id = wandb.sweep(sweep_config, project = "trail-1")
 wandb.agent(sweep_id, function = train_nn)
 #################################################################### [markdown]
