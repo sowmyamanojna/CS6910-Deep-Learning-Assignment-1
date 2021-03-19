@@ -27,6 +27,7 @@ class NeuralNetwork():
         self.num_batches = math.ceil(self.t.shape[1]/batch_size)
         self.loss_type = loss
         self.loss = map_losses[loss]
+        self.use_wandb = use_wandb
         if t_val is not None:
             self.X_val = X_val
             self.layers[0].a_val = X_val
@@ -122,13 +123,14 @@ class NeuralNetwork():
             self.loss_hist_val.append(self.loss.calc_loss(self.t_val, self.layers[-1].y_val))
             self.accuracy_hist_val.append(val_acc)
 
-            wandb.log({
-                        "step": ep, \
-                        "loss:": self.loss_hist[-1]/self.t.shape[1], \
-                        "accuracy": self.accuracy_hist[-1]/self.t.shape[1], \
-                        "val_loss": self.loss_hist_val[-1]/self.t_val.shape[1], \
-                        "val_accuracy": self.accuracy_hist_val[-1]/self.t_val.shape[1]
-                      })
+            if self.use_wandb:
+                wandb.log({
+                            "step": ep, \
+                            "loss:": self.loss_hist[-1]/self.t.shape[1], \
+                            "accuracy": self.accuracy_hist[-1]/self.t.shape[1], \
+                            "val_loss": self.loss_hist_val[-1]/self.t_val.shape[1], \
+                            "val_accuracy": self.accuracy_hist_val[-1]/self.t_val.shape[1]
+                        })
             
             for batch in range(self.num_batches):
                 # print("\n", "="*50)
