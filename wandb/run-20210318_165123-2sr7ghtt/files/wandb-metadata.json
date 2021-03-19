@@ -1,0 +1,22 @@
+{
+    "os": "Linux-5.4.0-67-generic-x86_64-with-glibc2.29",
+    "python": "3.8.5",
+    "heartbeatAt": "2021-03-18T11:21:26.512411",
+    "startedAt": "2021-03-18T11:21:23.729706",
+    "docker": null,
+    "cpu_count": 8,
+    "cuda": null,
+    "args": [],
+    "state": "running",
+    "program": "Question-4.py",
+    "codePath": "Question-4.py",
+    "git": {
+        "remote": "https://github.com/sowmyamanojna/CS6910-Deep-Learning-Assignments.git",
+        "commit": "95b7a3c2738d0dd1c8fbabf598053ebb956c776b"
+    },
+    "email": "sowmyamanojna@gmail.com",
+    "root": "/home/sowmya/Desktop/cs6910/assignment/assignment1",
+    "host": "sowmya-Inspiron-5570",
+    "username": "sowmya",
+    "executable": "/usr/bin/python3"
+}

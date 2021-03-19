@@ -1,0 +1,16 @@
+wandb_version: 1
+
+activation:
+  value: Sigmoid
+batch_size:
+  value: 128
+loss:
+  value: CrossEntropy
+num_epochs:
+  value: 10
+optimizer:
+  value: Normal
+size_hidden_layer:
+  value: 64
+weight_init:
+  value: XavierUniform
