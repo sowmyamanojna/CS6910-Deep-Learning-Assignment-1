@@ -95,6 +95,34 @@ wandb.log({"conf_mat" : wandb.plot.confusion_matrix(
                                      "Bag","Ankle boot"])})
 ```
 
+
+## Question 10
+Three hyperparameter sets were selected and were run on the MNIST dataset. The configurations choosen are as follows:
+
+- Configuration 1: 
+    - `optimizer` = Adam, 
+    - `init` = XavierUniform, 
+    - `activation` = tanh, 
+    - `hidden_layer_size` = 64, 
+    - `batch_size` = 1024, 
+    - `num_hidden_layers` = 1
+
+- Configuration 2: 
+    - `optimizer` = Adam, 
+    - `init` = XavierUniform, 
+    - `activation` = tanh, 
+    - `hidden_layer_size` = 32, 
+    - `batch_size` = 128, 
+    - `num_hidden_layers` = 1
+
+- Configuration 3: 
+    - `optimizer` = Adam, 
+    - `init` = XavierUniform, 
+    - `activation` = relu, 
+    - `hidden_layer_size` = 32, 
+    - `batch_size` = 1024, 
+    - `num_hidden_layers` = 1
+
 ---
 The codes are organized as follows:
 
