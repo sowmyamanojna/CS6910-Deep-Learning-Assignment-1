@@ -19,6 +19,7 @@ warnings.filterwarnings("ignore")
 print("Done!")
 
 map_optimizers = {"Normal":Normal(), "Momentum":Momentum(), "Nesterov":Nesterov(), "AdaGrad":AdaGrad(), "RMSProp":RMSProp(), "Adam":Adam(), "Nadam":Nadam()}
+
 #################################################################
 print("Loading data... ", end="")
 [(x_train, y_train), (x_test, y_test)] = fashion_mnist.load_data()
@@ -49,15 +50,16 @@ X_scaled = X_scaled[:, :2000]
 X_val_scaled = X_val_scaled[:, :500]
 t = t[:,:2000]
 t_val = t_val[:, :500]
+
 #################################################################
 layers = [Input(data=X_scaled), 
           Dense(size=64, activation="Sigmoid", name="HL1"), 
           Dense(size=10, activation="Sigmoid", name="OL")]
 
-model = NeuralNetwork(layers=layers, batch_size=128, optimizer="Normal", \
+model = NeuralNetwork(layers=layers, batch_size=2000, optimizer="Normal", \
                       intialization="RandomNormal", loss="CrossEntropy", \
                       epochs=int(100), t=t, X_val=X_val_scaled, t_val=t_val, \
-                      use_wandb=True)
+                      use_wandb=False)
 
 model.forward_propogation()
 first_pass_y = model.layers[-1].y
@@ -80,7 +82,6 @@ print("Testing Data")
 print("Fraction Correctly classified in trained network:", acc_test/t_test.shape[1])
 
 #################################################################
-
 plt.figure()
 plt.plot(np.array(model.accuracy_hist_val)/500, label="training accuracy")
 plt.plot(np.array(model.accuracy_hist)/2000, label="validation accuracy")

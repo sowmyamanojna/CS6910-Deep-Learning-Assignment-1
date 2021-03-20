@@ -100,7 +100,7 @@ class NeuralNetwork():
         y_tmp = encoder.inverse_transform(self.layers[-1].y_test)
         t_tmp = encoder.inverse_transform(t_test)
         acc_test = np.sum(y_tmp==t_tmp)
-        return acc_test, loss_test, self.layers[-1].y_test
+        return acc_test, loss_test, y_tmp
 
 
     def backward_propogation(self):
