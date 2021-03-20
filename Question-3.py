@@ -30,8 +30,6 @@ print("Size of Training data:", x_train.shape)
 print("Size of Validation data:", x_val.shape)
 
 print("Performing Scaling and Encoding transformations on the data... ", end="")
-scaler = MinMaxScaler()
-scaler.fit(x_train)
 X_scaled = scaler.transform(x_train)
 X_val_scaled = scaler.transform(x_val)
 X_test_scaled = scaler.transform(x_test)
@@ -57,7 +55,7 @@ layers = [Input(data=X_scaled),
           Dense(size=10, activation="Sigmoid", name="OL")]
 
 model = NeuralNetwork(layers=layers, batch_size=2000, optimizer="Normal", \
-                      intialization="RandomNormal", loss="CrossEntropy", \
+                      initialization="RandomNormal", loss="CrossEntropy", \
                       epochs=int(100), t=t, X_val=X_val_scaled, t_val=t_val, \
                       use_wandb=False)
 

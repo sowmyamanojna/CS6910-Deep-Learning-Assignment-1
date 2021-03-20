@@ -27,8 +27,6 @@ print("Size of Training data:", x_train.shape)
 print("Size of Validation data:", x_val.shape)
 
 print("Performing Scaling and Encoding transformations on the data ... ", end="")
-scaler = MinMaxScaler()
-scaler.fit(x_train)
 X_scaled = x_train/255
 X_val_scaled = x_val/255
 X_test_scaled = x_test/255
@@ -93,7 +91,7 @@ def train_nn(config = sweep_config):
                   Dense(size=10, activation=config.activation, name="OL")]
 
         nn_model = NeuralNetwork(layers=layers, batch_size=config.batch_size, \
-                                 optimizer=config.optimizer, intialization=config.weight_init, \
+                                 optimizer=config.optimizer, initialization=config.weight_init, \
                                  epochs=config.num_epochs, t=t, X_val=X_val_scaled, \
                                  t_val=t_val, loss=config.loss, use_wandb=True)#, \
                                 #  optim_params={"eta":config.learning_rate})

@@ -17,10 +17,10 @@ map_losses = {"SquaredError":SquaredError(), "CrossEntropy":CrossEntropy()}
 #         Network
 ################################################
 class NeuralNetwork():
-    def __init__(self, layers, batch_size, optimizer, intialization, epochs, t, loss, X_val=None, t_val=None, use_wandb=False, optim_params=None):
+    def __init__(self, layers, batch_size, optimizer, initialization, epochs, t, loss, X_val=None, t_val=None, use_wandb=False, optim_params=None):
         self.layers = layers
         self.batch_size = batch_size
-        self.intialization = intialization
+        self.initialization = initialization
         self.epochs = epochs
         self.optimizer = optimizer
         self.t = t
@@ -47,18 +47,18 @@ class NeuralNetwork():
                 layer.W_optimizer.set_params(optim_params)
                 layer.b_optimizer.set_params(optim_params)
 
-        if self.intialization == "RandomNormal":
+        if self.initialization == "RandomNormal":
             for layer in self.layers[1:]:
                 layer.W = np.random.normal(loc=0, scale=1.0, size = layer.W_size)
                 layer.b = np.zeros((layer.W_size[0], 1))
 
-        elif self.intialization == "XavierUniform":
+        elif self.initialization == "XavierUniform":
             for layer in self.layers[1:]:
                 initializer = tf.keras.initializers.RandomNormal(mean=0.0, stddev=0.05)#, seed=42)
                 layer.W = np.array(initializer(shape=layer.W_size))
                 layer.b = np.zeros((layer.W_size[0], 1))
 
-        elif self.intialization == "Test":
+        elif self.initialization == "Test":
             for layer in self.layers[1:]:
                 layer.W = np.ones(layer.W_size)*0.5
                 layer.b = np.zeros((layer.W_size[0], 1))
@@ -226,7 +226,7 @@ class NeuralNetwork():
         print("Epochs:", self.epochs)
         print("Batch Size:", self.batch_size)
         print("Optimizer:", self.optimizer)
-        print("Initialization:", self.intialization)
+        print("Initialization:", self.initialization)
 
     def get_accuracy(self, validation=False, print_vals=False):
         encoder = OneHotEncoder()

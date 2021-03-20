@@ -50,25 +50,13 @@ X_scaled = X_scaled[:, :21000]
 X_test_scaled = X_test_scaled[:, :9000]
 t = t[:, :21000]
 t_test = t_test[:, :9000]
-####################################################################
-# # Preparing small dataset to test the code
-# [(X_train, y_train), (X_test, y_test)] = fashion_mnist.load_data()
-# scaler = MinMaxScaler()
-# X_scaled = scaler.fit_transform(X_train)
-# X_scaled = X_scaled.reshape(X_scaled.shape[0], X_scaled.shape[1]*X_scaled.shape[2]).T
-
-# encoder = OneHotEncoder()
-# t = encoder.fit_transform(y_train, 10)
-
 
 ####################################################################
 sweep_config = {"name": "best-sweep", "method": "grid"}
 sweep_config["metric"] = {"name": "loss", "goal": "minimize"}
 parameters_dict = {
                 "num_epochs": {"values": [1]}, \
-                # "num_hidden_layers": {"values": [3, 4, 5]}, \
                 "size_hidden_layer": {"values": [64]}, \
-                # "learning_rate": {"values": [1e-3, 1e-4]}, \
                 "optimizer": {"values": ["RMSProp"]}, \
                 "batch_size": {"values": [128]}, \
                 "weight_init": {"values": ["XavierUniform"]} , \
@@ -76,8 +64,6 @@ parameters_dict = {
                 "loss": {"values": ["SquaredError"]}, \
                   }
 sweep_config["parameters"] = parameters_dict
-# for i in sweep_config:
-#     print(i, sweep_config[i])
 
 ####################################################################
 def train_nn(config = sweep_config):
@@ -96,10 +82,9 @@ def train_nn(config = sweep_config):
                   Dense(size=10, activation=config.activation, name="OL")]
 
         nn_model = NeuralNetwork(layers=layers, batch_size=config.batch_size, \
-                                 optimizer=config.optimizer, intialization=config.weight_init, \
+                                 optimizer=config.optimizer, initialization=config.weight_init, \
                                  epochs=config.num_epochs, t=t, X_val=X_val_scaled, \
-                                 t_val=t_val, loss=config.loss, use_wandb=True)#, \
-                                #  optim_params={"eta":config.learning_rate})
+                                 t_val=t_val, loss=config.loss, use_wandb=True)
 
         nn_model.forward_propogation()
         nn_model.backward_propogation()
@@ -125,7 +110,7 @@ def train_nn(config = sweep_config):
                         probs=None,
                         y_true=y_test[:9000],
                         preds=y_test_pred,
-                        class_names=["T-shirt/top","Trouser","Pullover","Dress","Coat","Sandal","Shirt","Sneaker","Bag","Ankle boot"])
+                        class_names=["T-shirt/top","Trouser","Pullover","Dress","Coat","Sandal","Shirt","Sneaker","Bag","Ankle boot"])})
 
 ####################################################################
 sweep_id = wandb.sweep(sweep_config, project = "trail-1")
