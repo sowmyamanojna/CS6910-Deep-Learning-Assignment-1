@@ -1,3 +1,4 @@
+print("Importing Libraries ...")
 ####################################################################
 import wandb
 import numpy as np
@@ -8,12 +9,11 @@ from optimizers import Normal, Momentum, Nesterov, AdaGrad, RMSProp, Adam, Nadam
 from network import NeuralNetwork
 from loss import CrossEntropy, SquaredError
 from helper import OneHotEncoder, MinMaxScaler
-
 from sklearn.model_selection import train_test_split
 
 from keras.datasets import fashion_mnist
 import matplotlib.pyplot as plt
-
+print("Done!")
 #################################################################### [markdown]
 # # Loss on Training Data
 ####################################################################
@@ -59,7 +59,7 @@ t_test = t_test[:, :9000]
 
 
 ####################################################################
-sweep_config = {"name": "random-test-sweep", "method": "grid"}
+sweep_config = {"name": "complete-sweep", "method": "grid"}
 sweep_config["metric"] = {"name": "loss", "goal": "minimize"}
 parameters_dict = {
                 "num_epochs": {"values": [10, 50]}, \
