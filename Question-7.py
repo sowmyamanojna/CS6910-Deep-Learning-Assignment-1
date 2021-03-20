@@ -7,6 +7,7 @@ Original file is located at
     https://colab.research.google.com/drive/184QFISt0c7J4EUEbEs8asTRXhHlF6PxJ
 """
 
+!pip install wandb
 import wandb
 import numpy as np
 import os
@@ -37,21 +38,20 @@ t_train = encoder.fit_transform(y_train, 10)
 t_test = encoder.fit_transform(y_test, 10)
 
 layers = [Input(data = X_scaled), \
-          Dense(size = 64, activation = 'Sigmoid', name= 'HL1'), \
+          Dense(size = 64, activation = 'Tanh', name= 'HL1'), \
           Dense(size = 10, activation = 'Sigmoid', name = 'OL')]
 
-nn_model = NeuralNetwork(layers = layers, batch_size = 128, \
-                         optimizer = 'RMSProp', intialization = 'XavierUniform', \
-                         epochs = 50, t = t_train, X_val = X_test_scaled, t_val = t_test, loss = "CrossEntropy") 
+nn_model = NeuralNetwork(layers = layers, batch_size = 1024, \
+                         optimizer = 'Adam', intialization = 'XavierUniform', \
+                         epochs = 10, t = t_train, X_val = X_test_scaled, t_val = t_test, loss = 'CrossEntropy') 
 nn_model.forward_propogation()
 nn_model.backward_propogation()
 
 _, _, ypred = nn_model.check_test(X_test_scaled, y_test)
 y_labels_pred = np.argmax(ypred, axis = 0)
-
 print('Accuracy on test set = {}'.format(np.sum(y_test == y_labels_pred)/y_test.shape[0]))
 
-wandb.init(project = 'FDL-Q7-Run3')
+wandb.init(project = 'FDL-Q7-Run5')
 wandb.log({"conf_mat" : wandb.plot.confusion_matrix(probs = None,\
                         y_true = y_test, preds = y_labels_pred, \
                         class_names = np.arange(10))})
