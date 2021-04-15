@@ -1,4 +1,8 @@
 # CS6910 Assignment 1
+Assignment 1 submission for the course CS6910 Fundamentals of Deep Learning.
+
+Team members: N Sowmya Manojna (BE17B007), Shubham Kashyapi (MM16B027)
+---
 
 ## Question 1
 The code for question 1 can be accessed [here](https://github.com/sowmyamanojna/CS6910-Deep-Learning-Assignment-1/blob/main/Question-1.py). The program, reads the data from `keras.datasets`, picks one example from each class and logs the same to `wandb`.
